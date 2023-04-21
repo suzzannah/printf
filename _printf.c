@@ -1,36 +1,44 @@
 #include "main.h"
-
 /**
- * _printf -> This Prints a formatted string
- * c
- * @format:this Inputs the String Format
- *
- * Return: Number of chars Printed
+ * _printf - the printf function
+ * @format: constant char pointer
+ * by sue and victor
+ * Return: b_len
  */
-
 int _printf(const char *format, ...)
 {
-	int printed = 0, k;
-	va_list list;
+	int (*pfunc)(va_list, flags_t *);
+	const char *p;
+	va_list arguments;
+	flags_t flags = {0, 0, 0};
 
-	va_start(list, format);
-	for (k = 0; format[k] != '\0'; k++)
+	register int count = 0;
+
+	va_start(arguments, format);
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = format; *p; p++)
 	{
-		if (format[k] == '%')
+		if (*p == '%')
 		{
-			k++;
-			if (format[k] == 'c')
-				printed += _put(va_arg(list, int));
-			else if (format[k] == 's')
-				printed += _puts(va_arg(list, char *));
-			else if (format[k] == 'd' || format[k] == 'k')
-				printed += put_int(va_arg(list, int));
-			else if (format[k] == 'b')
-				printed += put_binary(va_arg(list, unsigned int));
-			else
-				printed += _put(format[k]);
+			p++;
+			if (*p == '%')
+			{
+				count += _putchar('%');
+				continue;
+			}
+			while (get_flag(*p, &flags))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(arguments, &flags)
+				: _printf("%%%c", *p);
 		} else
-			printed += _put(format[k]);
-	} va_end(list);
-	return (printed);
+			count += _putchar(*p);
+	}
+	_putchar(-1);
+	va_end(arguments);
+	return (count);
 }

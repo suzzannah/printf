@@ -1,59 +1,32 @@
-#ifndef MAIN_H
-#define MAIN_H
-#define BINARY_OPTION        0
-#define UNSIGNED_OPTION      1
-#define OCTAL_OPTION         2
-#define HEX_OPTION           3
-#define CAPPED_HEX_OPTION    4
-#define C_STRING_OPTION      5
-#define DEFAULT_OPTION       6
+#ifndef _HOLBERTON_H_
+#define _HOLBERTON_H_
 
-#include <stdlib.h>
 #include <stdarg.h>
-#include <ctype.h>
 /**
- * struct flags - struct containing flags
- * @plus: flag for '+' character
- * @space: flag for ' ' character
- * @hash: flag for '#' character
+ * struct print - structure for printing various types
+ * @t: type to print
+ * @f: function to print
  */
-typedef struct _printf_case
+typedef struct print
 {
-  char id;
-  int (*print_case)();
-} _printf_case_t;
+	char *t;
+	int (*f)(va_list);
+} print_t;
 
-typedef struct flags
-{
-	int plus;
-	int space;
-	int hash;
-} flags_t;
-typedef struct printHandler
-{
-	char c;
-	int (*f)(va_list ap, flags_t *f);
-} ph;
-int print_int(va_list l, flags_t *f);
-void print_number(int n);
-int print_unsigned(va_list l, flags_t *f);
-int count_digit(int i);
-int print_hex(va_list l, flags_t *f);
-int print_hex_big(va_list l, flags_t *f);
-int print_binary(va_list l, flags_t *f);
-int print_octal(va_list l, flags_t *f);
-char *convert(unsigned long int num, int base, int lowercase);
-int _printf(const char *format, ...);
-int (*get_print(char s))(va_list, flags_t *);
-int get_flag(char s, flags_t *f);
-int print_string(va_list l, flags_t *f);
-int print_char(va_list l, flags_t *f);
 int _putchar(char c);
-int _puts(char *str);
-int print_rot13(va_list l, flags_t *f);
-int print_rev(va_list l, flags_t *f);
-int print_bigS(va_list l, flags_t *f);
-int print_address(va_list l, flags_t *f);
-int print_percent(va_list l, flags_t *f);
-int get_width(const char *format, int *i, va_list list);
-#endif
+int _printf(const char *format, ...);
+int print_c(va_list c);
+int print_s(va_list s);
+int print_i(va_list i);
+int print_d(va_list d);
+int print_u(va_list u);
+int print_b(va_list b);
+int print_o(va_list o);
+int print_x(va_list x);
+int print_X(va_list X);
+int print_p(va_list p);
+int print_S(va_list S);
+int print_r(va_list r);
+int print_R(va_list R);
+
+#endif  /* _HOLBERTON_H */
